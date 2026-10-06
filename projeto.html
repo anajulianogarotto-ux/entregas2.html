@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LogiBuild - Gestão de Entregas</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         TELA DE LOGIN
+    ====================================================== -->
+
+    <section id="loginPage" class="login-page">
+
+        <div class="login-container">
+
+            <div class="brand-login">
+                <div class="brand-icon">LB</div>
+
+                <h1>Logi<span>Build</span></h1>
+
+                <p>Gestão de entregas</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+
+                <div class="form-group">
+                    <label for="username">Login</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Digite seu login"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="branch">Filial</label>
+
+                    <select id="branch" required>
+                        <option value="1">Filial 1</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Entrar no sistema
+                </button>
+
+                <div id="loginError" class="login-error"></div>
+
+            </form>
+
+            <div class="login-footer">
+                <span>Filial 1</span>
+                <span>•</span>
+                <span>Sistema de logística</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SISTEMA
+    ====================================================== -->
+
+    <section id="appPage" class="app-page hidden">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button id="mobileMenuButton" class="mobile-menu-button">
+                    ☰
+                </button>
+
+                <div class="brand">
+                    <div class="brand-icon small">LB</div>
+
+                    <div>
+                        <strong>Logi<span>Build</span></strong>
+                        <small>Gestão de Entregas</small>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="user-area">
+
+                <div class="user-info">
+                    <strong id="loggedUser">Usuário</strong>
+                    <span id="loggedRole">Funcionário</span>
+                </div>
+
+                <button id="logoutButton" class="logout-button">
+                    Sair
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <div class="app-layout">
+
+            <!-- SIDEBAR -->
+
+            <aside id="sidebar" class="sidebar">
+
+                <div class="branch-card">
+
+                    <div class="branch-icon">
+                        🚚
+                    </div>
+
+                    <div>
+                        <small>Filial atual</small>
+                        <strong>Filial 1</strong>
+                    </div>
+
+                </div>
+
+                <nav class="navigation">
+
+                    <button class="nav-item active" data-section="calendarSection">
+                        <span>▦</span>
+                        Calendário
+                    </button>
+
+                    <button class="nav-item" data-section="summarySection">
+                        <span>▤</span>
+                        Resumo
+                    </button>
+
+                </nav>
+
+                <div class="sidebar-footer">
+                    <small>LogiBuild</small>
+                    <span>v1.0</span>
+                </div>
+
+            </aside>
+
+
+            <!-- CONTEÚDO -->
+
+            <main class="main-content">
+
+                <!-- CABEÇALHO DA PÁGINA -->
+
+                <div class="page-header">
+
+                    <div>
+                        <span class="page-label">OPERAÇÃO</span>
+                        <h1>Calendário de Entregas</h1>
+                        <p>
+                            Acompanhe as entregas programadas da Filial 1.
+                        </p>
+                    </div>
+
+                    <div class="header-actions">
+
+                        <button id="todayButton" class="btn-secondary">
+                            Hoje
+                        </button>
+
+                        <button
+                            id="addDeliveryButton"
+                            class="btn-primary admin-only"
+                        >
+                            + Nova entrega
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     CALENDÁRIO
+                ================================================== -->
+
+                <section id="calendarSection" class="content-section">
+
+                    <div class="calendar-toolbar">
+
+                        <button id="previousWeek" class="calendar-arrow">
+                            ‹
+                        </button>
+
+                        <div class="week-title">
+                            <strong id="weekTitle">
+                                Semana
+                            </strong>
+
+                            <span id="weekSubtitle">
+                                Segunda a sábado
+                            </span>
+                        </div>
+
+                        <button id="nextWeek" class="calendar-arrow">
+                            ›
+                        </button>
+
+                    </div>
+
+
+                    <div class="calendar-wrapper">
+
+                        <div class="calendar-grid" id="calendarGrid">
+
+                            <!--
+                                O JavaScript monta a grade
+                                automaticamente.
+                            -->
+
+                        </div>
+
+                    </div>
+
+                    <div class="calendar-legend">
+
+                        <div>
+                            <span class="legend-color scheduled"></span>
+                            Programada
+                        </div>
+
+                        <div>
+                            <span class="legend-color returning"></span>
+                            Em rota
+                        </div>
+
+                        <div>
+                            <span class="legend-color completed"></span>
+                            Concluída
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     RESUMO
+                ================================================== -->
+
+                <section
+                    id="summarySection"
+                    class="content-section hidden"
+                >
+
+                    <div class="summary-grid">
+
+                        <div class="summary-card">
+                            <div class="summary-icon yellow">
+                                🚚
+                            </div>
+
+                            <div>
+                                <span>Entregas</span>
+                                <strong id="summaryDeliveries">0</strong>
+                            </div>
+                        </div>
+
+
+                        <div class="summary-card">
+                            <div class="summary-icon blue">
+                                ◷
+                            </div>
+
+                            <div>
+                                <span>Em rota</span>
+                                <strong id="summaryInRoute">0</strong>
+                            </div>
+                        </div>
+
+
+                        <div class="summary-card">
+                            <div class="summary-icon green">
+                                ✓
+                            </div>
+
+                            <div>
+                                <span>Concluídas</span>
+                                <strong id="summaryCompleted">0</strong>
+                            </div>
+                        </div>
+
+
+                        <div class="summary-card">
+                            <div class="summary-icon gray">
+                                ▣
+                            </div>
+
+                            <div>
+                                <span>Clientes</span>
+                                <strong id="summaryClients">0</strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <h2>Próximas entregas</h2>
+                                <p>Visão geral da programação atual.</p>
+                            </div>
+                        </div>
+
+                        <div id="summaryList" class="summary-list"></div>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MODAL DE ENTREGA
+    ====================================================== -->
+
+    <div id="deliveryModal" class="modal hidden">
+
+        <div class="modal-overlay"></div>
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="page-label">ADMINISTRADOR</span>
+                    <h2 id="modalTitle">Nova entrega</h2>
+                </div>
+
+                <button id="closeModal" class="modal-close">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="deliveryForm">
+
+                <input type="hidden" id="deliveryId">
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="deliveryDate">
+                            Data
+                        </label>
+
+                        <select id="deliveryDate" required>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicle">
+                            Veículo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="vehicle"
+                            placeholder="Ex.: Caminhão 01"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="departureTime">
+                            Saída
+                        </label>
+
+                        <select id="departureTime" required>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="returnTime">
+                            Retorno previsto
+                        </label>
+
+                        <select id="returnTime" required>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="clients">
+                        Cliente(s)
+                    </label>
+
+                    <textarea
+                        id="clients"
+                        rows="3"
+                        placeholder="Ex.: João da Silva, Maria Construções"
+                        required
+                    ></textarea>
+
+                    <small>
+                        Para vários clientes, separe por vírgula.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="material">
+                        Material / observação
+                    </label>
+
+                    <input
+                        type="text"
+                        id="material"
+                        placeholder="Ex.: 30 sacos de cimento + areia"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="deliveryStatus">
+                        Status
+                    </label>
+
+                    <select id="deliveryStatus">
+
+                        <option value="scheduled">
+                            Programada
+                        </option>
+
+                        <option value="returning">
+                            Em rota
+                        </option>
+
+                        <option value="completed">
+                            Concluída
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div id="formError" class="form-error"></div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        id="cancelModal"
+                        class="btn-secondary"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        Salvar entrega
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL DE DETALHES
+    ====================================================== -->
+
+    <div id="detailsModal" class="modal hidden">
+
+        <div class="modal-overlay"></div>
+
+        <div class="modal-box details-box">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="page-label">ENTREGA</span>
+                    <h2 id="detailsTitle">Detalhes</h2>
+                </div>
+
+                <button id="closeDetails" class="modal-close">
+                    ×
+                </button>
+
+            </div>
+
+            <div id="deliveryDetails"></div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
